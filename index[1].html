@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KREW BOT — Discord Bot Project</title>
+<meta name="description" content="KREW is a Discord bot project for moderation, management, utilities, automation and more.">
+<style>
+:root{--bg:#09090c;--panel:#101116;--panel2:#14151b;--text:#f2f2f5;--muted:#9a9ba7;--line:#272833;--purple:#8b5cf6;--purple2:#a78bfa;--green:#45d483;--danger:#ef6461}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text)}
+body{display:flex;position:relative;overflow-x:hidden}
+body::before,body::after{content:"";position:fixed;pointer-events:none;z-index:0;opacity:.18}
+body::before{inset:-30%;background:repeating-linear-gradient(115deg,transparent 0 85px,rgba(139,92,246,.28) 86px,transparent 87px 170px);animation:lineFlow 18s linear infinite}
+body::after{width:55vw;height:55vw;right:-20vw;top:12vh;border:1px solid rgba(167,139,250,.22);border-radius:50%;box-shadow:0 0 0 70px rgba(139,92,246,.035),0 0 0 140px rgba(139,92,246,.025);animation:orbMove 14s ease-in-out infinite}
+@keyframes lineFlow{from{transform:translate3d(-5%,0,0)}to{transform:translate3d(5%,4%,0)}}
+@keyframes orbMove{0%,100%{transform:translate(0,0) rotate(0deg)}50%{transform:translate(-45px,35px) rotate(12deg)}}
+.sidebar{width:235px;border-right:1px solid var(--line);padding:22px 14px;position:fixed;inset:0 auto 0 0;background:#0b0b0f;z-index:5}
+.brand{font-weight:800;letter-spacing:.08em;font-size:17px;padding:8px 10px 22px}.brand small{display:block;color:var(--muted);font-weight:500;letter-spacing:0;font-size:11px;margin-top:5px}
+nav button{width:100%;border:0;background:transparent;color:#aeb0bb;text-align:left;padding:10px 12px;border-radius:7px;margin:2px 0;cursor:pointer;font-size:14px}
+nav button:hover,nav button.active{background:#181820;color:#fff}nav button.active{box-shadow:inset 2px 0 0 var(--purple)}
+.main{margin-left:235px;width:calc(100% - 235px);min-height:100vh;position:relative;z-index:1}.topbar{height:64px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 34px;position:sticky;top:0;background:rgba(9,9,12,.92);backdrop-filter:blur(12px);z-index:4}
+.status{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:7px}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px #45d48355}
+.toplinks a{color:#b5b6c0;text-decoration:none;font-size:13px;margin-left:20px}.toplinks a:hover{color:white}
+.view{display:none;max-width:1120px;margin:auto;padding:58px 34px 80px}.view.active{display:block;animation:in .2s ease}@keyframes in{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}
+.hero{padding:65px 0 45px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;width:230px;height:1px;right:4%;top:28%;background:linear-gradient(90deg,transparent,var(--purple2),transparent);box-shadow:0 24px 0 rgba(167,139,250,.45),0 48px 0 rgba(167,139,250,.2);transform:rotate(-18deg);animation:scanLine 5s ease-in-out infinite}
+@keyframes scanLine{0%,100%{transform:translateX(80px) rotate(-18deg);opacity:.25}50%{transform:translateX(-30px) rotate(-18deg);opacity:1}}.eyebrow{color:var(--purple2);font-size:12px;text-transform:uppercase;letter-spacing:.16em;font-weight:700}.hero h1{font-size:clamp(48px,8vw,88px);line-height:.95;margin:13px 0 20px;letter-spacing:-.06em}.hero p{max-width:650px;color:#b4b5c0;font-size:17px;line-height:1.7}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:11px 17px;border-radius:7px;text-decoration:none;border:1px solid var(--line);color:#fff;font-weight:700;font-size:13px;cursor:pointer;background:#15161c}.btn.primary{background:var(--purple);border-color:var(--purple)}.btn:hover{filter:brightness(1.1)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{background:rgba(16,17,22,.88);border:1px solid var(--line);border-radius:10px;padding:19px}.card h3{font-size:14px;margin:0 0 8px}.card p{font-size:13px;line-height:1.6;color:var(--muted);margin:0}.section-title{margin:0 0 22px;font-size:28px;letter-spacing:-.03em}.sub{color:var(--muted);line-height:1.65;margin-top:-10px;margin-bottom:28px}
+.preview{border:1px solid var(--line);background:#0d0e13;border-radius:12px;overflow:hidden;margin-top:36px}.previewbar{padding:11px 15px;border-bottom:1px solid var(--line);font-size:12px;color:#9b9ca8}.discord{display:grid;grid-template-columns:155px 1fr}.server-side{background:#111219;padding:15px;border-right:1px solid var(--line)}.server-side div{font-size:11px;color:#858793;padding:7px 5px}.server-side .sel{color:white;background:#1a1b23;border-radius:5px}.chat{padding:20px}.fake-line{height:9px;background:#20212a;border-radius:3px;width:65%;margin:12px 0}.fake-line.short{width:38%}
+.badge{display:inline-block;font-size:10px;border:1px solid #343541;border-radius:999px;padding:4px 8px;color:#bfc0ca}.badge.live{border-color:#275c42;color:#71dc9b}.badge.dev{border-color:#51427c;color:#baa7fa}.badge.plan{border-color:#4b4540;color:#d0b89c}
+.command{display:grid;grid-template-columns:150px 1fr 120px 90px;gap:12px;align-items:center;border-bottom:1px solid var(--line);padding:13px 0;font-size:13px}.command code{color:#c4aafa}.command span{color:var(--muted)}
+.faq{border:1px solid var(--line);border-radius:9px;margin:9px 0;overflow:hidden}.faq summary{cursor:pointer;padding:15px;font-size:14px;font-weight:650}.faq p{color:var(--muted);font-size:13px;line-height:1.65;padding:0 15px 15px;margin:0}
+.team{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.person{min-height:150px}.role{color:var(--purple2);font-size:11px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:9px}.person h3{font-size:17px;margin:0 0 8px}.person p{color:var(--muted);font-size:12px}
+.footer{border-top:1px solid var(--line);padding:25px 34px;color:#777985;font-size:11px;display:flex;justify-content:space-between;gap:20px}.footer a{color:#9b9ca8;text-decoration:none;margin-left:13px}
+.notice{border:1px solid #332d46;background:#111019;padding:13px;border-radius:8px;color:#bcb7cc;font-size:12px;line-height:1.6;margin:18px 0}
+.dashboard{display:grid;grid-template-columns:175px 1fr;min-height:410px}.dashnav{background:#101116;border-right:1px solid var(--line);padding:15px}.dashnav h4{font-size:10px;color:#666874;text-transform:uppercase;letter-spacing:.12em;margin:7px}.dashnav div{font-size:11px;color:#9899a4;padding:7px;border-radius:5px}.dashnav .on{background:#1a1922;color:#fff}.dashbody{padding:20px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.stat{border:1px solid var(--line);border-radius:8px;padding:12px}.stat small{color:#777985;font-size:9px}.stat strong{display:block;margin-top:7px;font-size:14px}
+@media(max-width:800px){.preview > div[style*="grid-template-columns"]{grid-template-columns:1fr!important}.sidebar{position:sticky;width:100%;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:10px;display:flex;align-items:center;gap:8px;overflow:auto}.brand{padding:7px 10px;min-width:110px}.brand small{display:none}nav{display:flex;gap:2px}nav button{white-space:nowrap;width:auto}.main{margin-left:0;width:100%}.topbar{padding:0 16px}.toplinks{display:none}.view{padding:35px 17px 55px}.grid,.team{grid-template-columns:1fr}.discord{grid-template-columns:95px 1fr}.command{grid-template-columns:1fr;gap:5px}.stats{grid-template-columns:1fr 1fr}.footer{padding:20px 17px;flex-direction:column}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">KREW BOT<small>Discord bot project</small></div>
+  <nav id="nav">
+    <button data-page="home" class="active">Home</button><button data-page="features">Features</button><button data-page="commands">Commands</button><button data-page="dashboard">Dashboard</button><button data-page="team">Team</button><button data-page="changelog">Changelog</button><button data-page="faq">FAQ</button><button data-page="support">Support</button><button data-page="invite">Invite</button>
+  </nav>
+</aside>
+<main class="main">
+<header class="topbar"><div class="status"><i class="dot"></i> KREW project</div><div class="toplinks"><a href="https://discord.gg/E3hMdX3es" target="_blank">Support</a><a href="https://discord.com/oauth2/authorize?client_id=1519714408324923482&scope=bot%20applications.commands&permissions=2199023255551151971440" target="_blank">Add KREW</a></div></header>
+
+<section id="home" class="view active">
+  <div class="hero" style="min-height:62vh;display:flex;flex-direction:column;justify-content:center">
+    <div class="eyebrow">Welcome to KREW</div>
+    <h1>KREW BOT</h1>
+    <p>A clean Discord bot built to help servers with moderation, management, utilities, automation and more.</p>
+    <div class="actions">
+      <a class="btn primary" target="_blank" href="https://discord.com/oauth2/authorize?client_id=1519714408324923482&scope=bot%20applications.commands&permissions=2199023255551151971440">Add KREW</a>
+      <a class="btn" target="_blank" href="https://discord.gg/E3hMdX3es">Join Support</a>
+      <button class="btn" onclick="show('features')">Explore KREW</button>
+    </div>
+    <div style="display:flex;gap:9px;align-items:center;margin-top:25px;color:#777985;font-size:12px">
+      <span class="dot"></span> Discord bot project · actively developing
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="eyebrow" style="font-size:10px">01</div>
+      <h3 style="margin-top:10px">Moderation</h3>
+      <p>Tools for everyday server moderation and member management.</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow" style="font-size:10px">02</div>
+      <h3 style="margin-top:10px">Management</h3>
+      <p>Organized server settings, permissions, logging and staff systems.</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow" style="font-size:10px">03</div>
+      <h3 style="margin-top:10px">Automation</h3>
+      <p>Reduce repetitive staff work with planned automated server tools.</p>
+    </div>
+  </div>
+
+  <div class="preview">
+    <div class="previewbar">KREW • getting started</div>
+    <div style="padding:24px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+      <div class="card"><h3>1. Add KREW</h3><p>Invite the bot to your Discord server using the official invite.</p></div>
+      <div class="card"><h3>2. Join support</h3><p>Get help, report bugs and discuss the project with the KREW community.</p></div>
+      <div class="card"><h3>3. Explore</h3><p>Check the features, command reference and dashboard preview.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="features" class="view"><h2 class="section-title">Features</h2><p class="sub">Systems are separated by status so the site does not imply that planned functionality is already live.</p><div class="grid">
+<div class="card"><h3>Moderation <span class="badge plan">Planned</span></h3><p>Warn, timeout, kick, ban, moderation records and reports.</p></div>
+<div class="card"><h3>Server Management <span class="badge plan">Planned</span></h3><p>Settings and tools for managing a Discord server.</p></div>
+<div class="card"><h3>Automation <span class="badge plan">Planned</span></h3><p>Welcome, leave messages, auto-replies, logs and automated actions.</p></div>
+<div class="card"><h3>Logging <span class="badge plan">Planned</span></h3><p>Organized logs for important server and staff events.</p></div>
+<div class="card"><h3>Roles & Permissions <span class="badge plan">Planned</span></h3><p>Discord permissions and staff roles can control access.</p></div>
+<div class="card"><h3>Utility <span class="badge plan">Planned</span></h3><p>Useful commands and tools for members and staff.</p></div>
+<div class="card"><h3>Community <span class="badge plan">Planned</span></h3><p>Welcome, member and community-focused systems.</p></div>
+<div class="card"><h3>Tickets <span class="badge plan">Planned</span></h3><p>Support and ticket management with staff permissions.</p></div>
+<div class="card"><h3>Applications <span class="badge plan">Planned</span></h3><p>Staff, moderator and other application systems.</p></div>
+</div></section>
+
+<section id="commands" class="view"><h2 class="section-title">Commands</h2><p class="sub">Reference examples only. Replace these with the confirmed live KREW command list as the bot develops.</p><input id="search" placeholder="Search commands…" style="width:100%;background:#101116;border:1px solid var(--line);color:white;padding:12px;border-radius:7px;margin-bottom:20px"><div id="commands-list">
+<div class="command"><code>/help</code><span>Show available commands.</span><span>General</span><span>—</span></div><div class="command"><code>/ping</code><span>Check bot response.</span><span>Utility</span><span>—</span></div><div class="command"><code>/settings</code><span>Open server settings.</span><span>Management</span><span>Staff</span></div><div class="command"><code>/warn</code><span>Moderation command.</span><span>Moderation</span><span>Staff</span></div><div class="command"><code>/timeout</code><span>Temporary moderation action.</span><span>Moderation</span><span>Staff</span></div></div></section>
+
+<section id="dashboard" class="view"><h2 class="section-title">Dashboard</h2><p class="sub">A realistic front-end preview of the planned KREW control panel.</p><div class="notice">This static dashboard is a preview. A working dashboard will require Discord OAuth2, a backend, database, Discord API access and server-side permission checks.</div><div class="preview"><div class="previewbar">KREW Dashboard • Example Server</div><div class="dashboard"><div class="dashnav"><h4>Manage</h4><div class="on">Overview</div><div>Moderation</div><div>AutoMod</div><div>Welcome</div><div>Tickets</div><div>Logging</div><div>Roles</div><div>Automation</div><div>Giveaways</div><div>Server Settings</div></div><div class="dashbody"><h3 style="margin-top:0">Overview</h3><div class="stats"><div class="stat"><small>BOT STATUS</small><strong>Configured</strong></div><div class="stat"><small>MODERATION</small><strong>Preview</strong></div><div class="stat"><small>LOGGING</small><strong>Preview</strong></div><div class="stat"><small>WELCOME</small><strong>Preview</strong></div></div><div class="card" style="margin-top:15px"><h3>Server settings</h3><p>Dashboard controls can eventually configure KREW without requiring a command for every setting.</p></div></div></div></div></section>
+
+<section id="team" class="view"><h2 class="section-title">Development team</h2><div class="team">
+<div class="card person"><div class="role">Owner</div><h3>pika boy</h3><p>Project owner and lead.</p></div><div class="card person"><div class="role">Co-Developer</div><h3>Capitano</h3><p>Development and project work.</p></div><div class="card person"><div class="role">Co-Developer</div><h3>Dakshu</h3><p>Development and project support.</p></div><div class="card person"><div class="role">Co-Developer</div><h3>ꪜꪗꪖꪀꫀ</h3><p>Development and website work.</p></div>
+</div></section>
+
+<section id="changelog" class="view"><h2 class="section-title">Changelog</h2><p class="sub">Project notes without invented versions, dates or statistics.</p><div class="grid">
+<div class="card"><h3>Website redesign</h3><p>Cleaner website structure and separate pages.</p></div><div class="card"><h3>Dashboard preview</h3><p>Added a dashboard interface showing the planned control panel.</p></div><div class="card"><h3>Command reference</h3><p>Added a searchable command reference layout.</p></div><div class="card"><h3>Dashboard development</h3><p>Live server configuration will require backend and Discord OAuth2 integration.</p></div><div class="card"><h3>Future updates</h3><p>More bot features and integrations can be added as KREW develops.</p></div>
+</div></section>
+
+<section id="faq" class="view"><h2 class="section-title">FAQ</h2>
+<details class="faq"><summary>What is KREW?</summary><p>KREW is a Discord bot project designed for server management, moderation, utilities, automation and other server tools.</p></details>
+<details class="faq"><summary>How do I add KREW?</summary><p>Click the Add KREW button and follow Discord's authorization process.</p></details>
+<details class="faq"><summary>Where can I get support?</summary><p>Join the official KREW support server.</p></details>
+<details class="faq"><summary>Is the dashboard live?</summary><p>The public dashboard is initially a front-end preview. A real dashboard requires a backend and Discord OAuth2.</p></details>
+<details class="faq"><summary>Are all commands listed?</summary><p>The command page currently contains reference examples. It should eventually contain the confirmed live KREW command list.</p></details>
+<details class="faq"><summary>Can I suggest a feature?</summary><p>Use the support server for suggestions and project discussion.</p></details>
+</section>
+
+<section id="support" class="view"><h2 class="section-title">Need help with KREW?</h2><p class="sub">Use the support server for questions, bug reports, suggestions, bot problems, setup help, dashboard problems and general project discussion.</p><a class="btn primary" target="_blank" href="https://discord.gg/E3hMdX3es">Join Support Server</a><div class="card" style="margin-top:30px"><h3>Bug report guide</h3><p>1. Explain what happened.<br>2. Tell the team which command/system was involved.<br>3. Explain what you expected.<br>4. Add useful screenshots/details when necessary.</p></div></section>
+
+<section id="invite" class="view"><div class="hero"><div class="eyebrow">Discord authorization</div><h2 style="font-size:48px;margin:14px 0">Add KREW to your server.</h2><p>Bring KREW into your Discord server and start setting up your server tools.</p><div class="actions"><a class="btn primary" target="_blank" href="https://discord.com/oauth2/authorize?client_id=1519714408324923482&scope=bot%20applications.commands&permissions=2199023255551151971440">Invite KREW</a><a class="btn" target="_blank" href="https://discord.gg/E3hMdX3es">Join Support Server</a></div></div></section>
+
+<footer class="footer"><div><strong>KREW BOT</strong> · Discord Bot Project</div><div><a href="#" data-footer="home">Home</a><a href="#" data-footer="features">Features</a><a href="#" data-footer="commands">Commands</a><a href="#" data-footer="dashboard">Dashboard</a><a href="#" data-footer="team">Team</a><a href="#" data-footer="support">Support</a><a href="#" data-footer="invite">Invite</a></div></footer>
+</main>
+<script>
+const buttons=[...document.querySelectorAll("nav button")], views=[...document.querySelectorAll(".view")];
+function show(page){views.forEach(v=>v.classList.toggle("active",v.id===page));buttons.forEach(b=>b.classList.toggle("active",b.dataset.page===page));history.replaceState(null,"","#"+page);window.scrollTo({top:0,behavior:"smooth"})}
+buttons.forEach(b=>b.addEventListener("click",()=>show(b.dataset.page)));
+document.querySelectorAll("[data-footer]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();show(a.dataset.footer)}));
+const search=document.getElementById("search");
+search?.addEventListener("input",()=>{const q=search.value.toLowerCase();document.querySelectorAll("#commands-list .command").forEach(x=>x.style.display=x.textContent.toLowerCase().includes(q)?"grid":"none")});
+const initial=location.hash.slice(1); if(initial&&document.getElementById(initial)) show(initial);
+</script>
+</body>
+</html>
